@@ -2,19 +2,16 @@ import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.Selenide;
 import com.codeborne.selenide.SelenideElement;
-
 import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Selenide.*;
 import org.junit.Assert;
 import org.junit.Test;
 import org.openqa.selenium.Keys;
 import java.time.Duration;
-
 import static com.codeborne.selenide.Selenide.$$x;
 import static com.codeborne.selenide.Selenide.$x;
 
 public class AllTests extends Megatest {
-    private final static String BASE_URL = "http://xn----8sbalhqhcqniie4b.xn--p1ai/";
 
     private final SelenideElement citilinkBtnVhod = $x(" //div[@class=\"HeaderMenu__button HeaderMenu__button_auth IconAndTextWithCount_mainHeader js--HeaderMenu__button_auth IconAndTextWithCount js--IconAndTextWithCount\"]");
     private final SelenideElement citiGorodViborBtn = $x("//button[@class=\"js--CitiesSearch-trigger MainHeader__open-text TextWithIcon\"]");
@@ -58,38 +55,34 @@ public class AllTests extends Megatest {
     }
 
     @Test
-    public void LeraCitilinkVhod(){ //проверка на неклибальноть кнопки при некорректных входных
+    public void LeraCitilinkVhod(){ //проверка на неклибальноть кнопки входа при некорректных входных
         Selenide.open("https://www.citilink.ru/");
         citilinkBtnVhod.click();
         citiInputPhon.setValue("888");
         citiInputPass.setValue("cheburashka&gena");
         Assert.assertFalse(citiVhodBtn.shouldBe(Condition.visible, Duration.ofSeconds(3)).isEnabled()); //, Duration.ofSeconds(5)
     }
-    //Перейти в каталог электрических зубных щеток, выполнить поиск с диапазоном цен от 999 до 1999 рублей.
-    //Добавить предпоследнюю щетку в
-    // корзину и перейти в нее. Проверить значение “До бесплатной доставки осталось”, убедиться что
-    // итоговая цена равна <стоимость щетки> + <доставка>
 
 
     @Test
     public void LeraToothbrush(){ //зубыне щетки
         Selenide.open("https://www.citilink.ru/");
         citiKatalogBtn.click();
-        actions().moveToElement(citiKrasota).perform(); //Build().
+        actions().moveToElement(citiKrasota).perform(); //Перейти в каталог электрических зубных щеток
         citiBrushBtn.click();
         FilterMin.get(1).clear();
         FilterMin.get(1).setValue("999");
         FilterMax.get(1).clear();
-        FilterMax.get(1).setValue("1999");
+        FilterMax.get(1).setValue("1999"); //выполнить поиск с диапазоном цен от 999 до 1999 рублей
         FilterMax.get(1).sendKeys(Keys.ENTER);
 
         citiDiapText.shouldHave(text("от 999 ₽ до 1 999 ₽"));
         Assert.assertTrue(citiDiapText.getText().contains("от 999 ₽ до 1 999 ₽"));
 
-        citiBrushe.click();
-        citiCorzina.get(1).click();
+        citiBrushe.click(); //Добавить предпоследнюю щетку в коризину
+        citiCorzina.get(1).click(); //перейти в нее
         citiIntoCorzina.click();
-        Assert.assertTrue(citiProductPrice.text().contains(citiFinalOrderPrice.text()));
+        Assert.assertTrue(citiProductPrice.text().contains(citiFinalOrderPrice.text())); //сравнить цену в корзине и цену товара
 
     }
 
