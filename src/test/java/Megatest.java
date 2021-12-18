@@ -3,9 +3,6 @@ import com.codeborne.selenide.Selenide;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Test;
-
-
 
 abstract public class Megatest {
 
@@ -26,12 +23,6 @@ abstract public class Megatest {
     public void tearDown(){
         Selenide.closeWebDriver();
     }
-    @Test
-    public void SignInIsError() {
-
-
-    }
-
 
 
 
